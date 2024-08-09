@@ -8,18 +8,16 @@ defmodule Kraden.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Telemetry supervisor
       KradenWeb.Telemetry,
-      # Start the Ecto repository
       Kraden.Repo,
-      # Start the PubSub system
+      {DNSCluster, query: Application.get_env(:kraden, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Kraden.PubSub},
-      # Start Finch
+      # Start the Finch HTTP client for sending emails
       {Finch, name: Kraden.Finch},
-      # Start the Endpoint (http/https)
-      KradenWeb.Endpoint
       # Start a worker by calling: Kraden.Worker.start_link(arg)
-      # {Kraden.Worker, arg}
+      # {Kraden.Worker, arg},
+      # Start to serve requests, typically the last entry
+      KradenWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

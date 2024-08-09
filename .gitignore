@@ -27,3 +27,6 @@ kraden-*.tar
 
 # no idea but I don't need it
 .DS_STORE
+
+# secrets, for configs we never want to share
+/config/*.secrets.exs

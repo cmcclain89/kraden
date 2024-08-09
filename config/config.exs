@@ -8,17 +8,19 @@
 import Config
 
 config :kraden,
-  ecto_repos: [Kraden.Repo]
+  ecto_repos: [Kraden.Repo],
+  generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :kraden, KradenWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: KradenWeb.ErrorHTML, json: KradenWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Kraden.PubSub,
-  live_view: [signing_salt: "8Uo1Dr/6"]
+  live_view: [signing_salt: "SNAXINAr"]
 
 # Configures the mailer
 #
@@ -32,7 +34,7 @@ config :kraden, Kraden.Mailer, adapter: Swoosh.Adapters.Local
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  default: [
+  kraden: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -41,8 +43,8 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.3.2",
-  default: [
+  version: "3.4.3",
+  kraden: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css
